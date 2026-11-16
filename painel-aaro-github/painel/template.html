@@ -1,0 +1,1180 @@
+<meta name="dash-one-writer">
+<style>
+  #dash-root { --dash-gutter: 0; }
+  .ar {
+    --ar-hi: #F5F1E8; --ar-fem: #D29A86; --ar-bg: #0A0A0B; --ar-panel: #121214; --ar-panel-2: #18181B; --ar-line: #2B2721; --ar-gold: #C9A24A; --ar-gold-2: #E6D3A3; --ar-text: #F3EEE4; --ar-muted: #9A9283; --ar-quiet: #5B554B;
+    --color-fg: var(--ar-text); --color-fg-muted: var(--ar-muted); --color-bg: var(--ar-bg); --color-panel: var(--ar-panel); --color-border-line: var(--ar-line);
+    --color-ok: #E8CF85; --color-warn: #E2B85C; --color-bad: #E48777;
+    --cds-chart-grid: rgba(255, 255, 255, .07); --cds-chart-axis: var(--ar-line); --cds-chart-muted: var(--ar-quiet); --cds-chart-reference: var(--ar-gold-2);
+    --cds-surface-popover: #1D1C1A; --cds-border: var(--ar-line); --cds-text-secondary: var(--ar-muted); --cds-shadow-popover: 0 8px 24px rgba(0, 0, 0, .55);
+    background: var(--ar-bg); color: var(--ar-text); font-family: var(--font-anthropic-sans);
+    display: flex; flex-direction: column; gap: var(--cds-gap-xl); padding: clamp(16px, 4vw, 48px) clamp(16px, 4vw, 48px) 96px; min-height: 100vh; box-sizing: border-box;
+  }
+  .ar.pal-ebano { --ar-hi: #F3EADB; --ar-fem: #C79079; --ar-bg: #0D0B09; --ar-panel: #16120E; --ar-panel-2: #1D1813; --ar-line: #362B1F; --ar-gold: #B8935A; --ar-gold-2: #EADBC0; --ar-text: #F1E9DC; --ar-muted: #A39580; --ar-quiet: #5E5142; }
+  .ar.pal-grafite { --ar-hi: #EEF2F6; --ar-fem: #D8A3A8; --ar-bg: #101215; --ar-panel: #171A1E; --ar-panel-2: #1E2227; --ar-line: #2D3238; --ar-gold: #D4AF37; --ar-gold-2: #C9CED4; --ar-text: #EEF0F2; --ar-muted: #8D949C; --ar-quiet: #4E555D; }
+  .ar-head-titulo { margin: 0; font-family: var(--font-anthropic-serif); font-size: 1.05rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ar-gold-2); text-align: center; }
+  .ar-head { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: var(--cds-gap-lg); border-bottom: 1px solid var(--ar-gold); padding-bottom: var(--cds-pad-lg); }
+  .ar-logo { display: flex; align-items: center; gap: 14px; }
+  .ar-logo-img { display: block; height: 84px; width: auto; max-width: 100%; mix-blend-mode: lighten; }
+  .ar-emblem { width: 52px; height: 52px; flex: none; }
+  .ar-emblem * { stroke: var(--ar-gold); fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .ar-emblem .ar-fill { fill: var(--ar-gold); stroke: none; }
+  .ar-logo-text { display: flex; flex-direction: column; gap: 2px; }
+  .ar-logo-name { font-family: var(--font-anthropic-serif); font-size: 2rem; line-height: 1; letter-spacing: .34em; color: var(--ar-gold); }
+  .ar-logo-sub { font-size: 10px; letter-spacing: .42em; text-transform: uppercase; color: var(--ar-gold-2); }
+  .ar-head-right { display: flex; flex-direction: column; align-items: flex-end; gap: var(--cds-gap-sm); }
+  .ar-pal { display: inline-flex; gap: 6px; align-items: center; font-size: 11px; color: var(--ar-muted); letter-spacing: .08em; text-transform: uppercase; }
+  .ar-pal button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--ar-line); background: transparent; color: var(--ar-muted); font: inherit; font-size: 11px; letter-spacing: .04em; text-transform: none; padding: 4px 10px 4px 6px; border-radius: 999px; cursor: pointer; }
+  .ar-pal button[aria-pressed="true"] { border-color: var(--ar-gold); color: var(--ar-text); }
+  .ar-pal i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  .ar-pal .sw-noir { background: linear-gradient(135deg, #0A0A0B 50%, #C9A24A 50%); }
+  .ar-pal .sw-ebano { background: linear-gradient(135deg, #16120E 50%, #B8935A 50%); }
+  .ar-pal .sw-grafite { background: linear-gradient(135deg, #171A1E 50%, #D4AF37 50%); }
+  .ar-mark { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-caption); letter-spacing: .32em; color: var(--ar-gold); text-transform: uppercase; }
+  .ar-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; line-height: 1.15; }
+  .ar-blocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); gap: var(--cds-gap-lg); }
+  .ar-block { background: linear-gradient(180deg, var(--ar-panel-2), var(--ar-panel)); border: 1px solid var(--ar-line); border-top: 2px solid var(--ar-gold); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+  .ar-block.ar-b2 { border-top-color: var(--ar-gold-2); }
+  .ar-kicker { font-size: 10px; letter-spacing: .32em; text-transform: uppercase; color: var(--ar-gold); }
+  .ar-b2 .ar-kicker { color: var(--ar-gold-2); }
+  .ar-block-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 1.55rem; margin: 0; letter-spacing: .02em; line-height: 1.1; }
+  .ar-filter { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm); padding: 10px 0; border-top: 1px solid var(--ar-line); border-bottom: 1px solid var(--ar-line); }
+  .ar-chips { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+  .ar-chips button { border: 1px solid var(--ar-line); background: transparent; color: var(--ar-muted); font: inherit; font-size: 12px; padding: 4px 10px; border-radius: 999px; cursor: pointer; font-variant-numeric: tabular-nums; }
+  .ar-chips button[aria-pressed="true"] { border-color: var(--ar-gold); background: var(--ar-gold); color: var(--ar-bg); }
+  .ar-dates { display: inline-flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: 12px; color: var(--ar-muted); }
+  .ar-dot { transform-box: fill-box; transform-origin: center; }
+  .ar-ring { transform-box: fill-box; transform-origin: center; opacity: 0; fill: none; stroke-width: 1.2; }
+  .ar-scan { opacity: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ar-anim .ar-dot { animation: ar-pop .55s var(--cds-ease-out) both; animation-delay: var(--d); }
+    .ar-anim .ar-ring { animation: ar-ring 1.3s var(--cds-ease-out) both; animation-delay: var(--d); }
+    .ar-anim .ar-scan { animation: ar-scan var(--ar-scan-dur) linear both; }
+  }
+  @keyframes ar-pop { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.6); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes ar-ring { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(3.2); opacity: 0; } }
+  @keyframes ar-scan { 0% { transform: translateX(0); opacity: .7; } 92% { opacity: .7; } 100% { transform: translateX(var(--ar-scan-w)); opacity: 0; } }
+  .ar-dates label { display: inline-flex; align-items: center; gap: 6px; }
+  .ar-dates input { background: var(--ar-bg); color: var(--ar-text); border: 1px solid var(--ar-line); border-radius: 6px; padding: 4px 6px; font: inherit; font-size: 12px; color-scheme: dark; }
+  .ar-bk { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); gap: var(--cds-gap-md); }
+  .ar-bk > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .ar-bk .ar-big { font-size: 1.15rem; }
+  .ar-bk .ar-label { font-size: 10px; }
+  .ar-bk .ar-foot { font-size: 11px; }
+  .ar-bfiltro { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .ar-taxas { display: flex; gap: var(--cds-gap-md); font-size: 11px; color: var(--ar-muted); font-variant-numeric: tabular-nums; }
+  .ar-taxas b { color: var(--ar-gold); font-weight: 600; }
+  .ar-b2 .ar-taxas b { color: var(--ar-gold-2); }
+  .ar-bhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--cds-gap-sm); padding-bottom: 8px; border-bottom: 1px solid var(--ar-line); }
+  .ar-bhead .ar-note { margin: 2px 0 0; font-size: 10px; }
+  .ar-bk { gap: var(--cds-gap-sm); }
+  .ar-bk > div { gap: 1px; }
+  .ar-block .ar-block-title { font-size: 1.35rem; }
+  .ar-funil { min-height: 58px; }
+  .ar-funil text { font-variant-numeric: tabular-nums; }
+  .ar-block .ar-note { margin: 0; font-size: 11px; }
+  .ar-hi-key { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ar-hi); margin: 0 4px 0 2px; vertical-align: 0; }
+  .ar-block .ar-chart { min-height: 196px; }
+  .ar-sub { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; font-variant-numeric: tabular-nums; }
+  .ar-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; border: 1px solid var(--color-border-line); border-radius: 999px; padding: 3px; }
+  .ar-seg button { border: 0; background: transparent; color: var(--color-fg-muted); font: inherit; font-size: var(--cds-font-size-caption); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .ar-seg button[aria-pressed="true"] { background: var(--ar-gold); color: var(--ar-bg); }
+  .ar-sexo { display: flex; gap: var(--cds-gap-md); font-size: 12px; color: var(--ar-muted); align-items: center; }
+  .ar-sexo b { color: var(--ar-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ar-sexo i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .ar-sexo .sw-f { background: var(--ar-gold-2); } .ar-sexo .sw-m { background: var(--ar-gold); }
+  .ar-block.ar-perfil .ar-chart { min-height: 210px; }
+  .ar-genero { min-height: 44px; }
+  .ar-cel { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) { .ar-anim .ar-cel { animation: ar-fade .5s var(--cds-ease-out) both; animation-delay: var(--d); } }
+  @keyframes ar-fade { from { opacity: 0; } to { opacity: 1; } }
+  .ar-grow { transform-box: fill-box; }
+  .ar-grow.ar-esq { transform-origin: right center; } .ar-grow.ar-dir { transform-origin: left center; }
+  @media (prefers-reduced-motion: no-preference) { .ar-anim .ar-grow { animation: ar-grow .8s var(--cds-ease-out) both; animation-delay: var(--d); } }
+  @keyframes ar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .ar-cria { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-md); min-height: 150px; }
+  .ar-cria-card { display: grid; grid-template-columns: 112px 1fr; align-items: center; gap: 12px; min-width: 0; }
+  .ar-cria-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .ar-cria-info .ar-cria-nome { font-size: 13px; }
+  .ar-cria-frame { position: relative; width: 112px; aspect-ratio: 4 / 5; border-radius: var(--cds-radius); border: 1px solid var(--ar-line); background: radial-gradient(120% 90% at 50% 0%, rgba(201, 162, 74, .22), rgba(0, 0, 0, 0) 60%), var(--ar-panel-2); overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px; text-align: center; }
+  .ar-cria-card.ar-top .ar-cria-frame { border-color: var(--ar-gold); box-shadow: 0 0 0 1px rgba(201, 162, 74, .35), 0 10px 30px rgba(0, 0, 0, .45); }
+  .ar-cria-rank { position: absolute; top: 8px; left: 8px; font-family: var(--font-anthropic-serif); font-size: 12px; color: var(--ar-bg); background: var(--ar-gold); border-radius: 999px; padding: 1px 8px; }
+  .ar-cria-tipo { position: absolute; top: 8px; right: 8px; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--ar-muted); border: 1px solid var(--ar-line); border-radius: 999px; padding: 1px 7px; }
+  .ar-cria-icone { width: 34px; height: 34px; }
+  .ar-cria-tipo-txt { letter-spacing: .14em; color: var(--ar-gold) !important; }
+  .ar-cria-frame.ar-com-print { padding: 0; justify-content: flex-end; background: #000; }
+  .ar-cria-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ar-cria-frame.ar-com-print .ar-cria-legenda { position: relative; width: 100%; padding: 28px 10px 10px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.88)); display: flex; flex-direction: column; gap: 2px; text-align: left; }
+  .ar-cria-linha { grid-template-columns: 28px 40px 1fr auto !important; }
+  .ar-cria-mini { width: 40px; height: 50px; border-radius: 4px; object-fit: cover; border: 1px solid var(--ar-line); background: var(--ar-panel); }
+  .ar-cria-icone * { stroke: var(--ar-gold); fill: none; stroke-width: 1.4; }
+  .ar-cria-icone .ar-fill { fill: var(--ar-gold); stroke: none; }
+  .ar-cria-nome { font-family: var(--font-anthropic-serif); font-size: 14px; line-height: 1.25; color: var(--ar-text); word-break: break-word; }
+  .ar-cria-camp { font-size: 10px; color: var(--ar-muted); line-height: 1.3; }
+  .ar-cria-leads { display: flex; align-items: baseline; gap: 6px; }
+  .ar-cria-leads b { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 1.6rem; color: var(--ar-gold); line-height: 1; }
+  .ar-b2 .ar-cria-leads b { color: var(--ar-gold-2); }
+  .ar-cria-leads span { font-size: 11px; color: var(--ar-muted); }
+  .ar-bhead-centro { justify-content: center; text-align: center; }
+  .ar-bhead-centro > div { display: flex; flex-direction: column; align-items: center; }
+  .ar-cria-sec { display: flex; justify-content: space-between; align-items: center; gap: var(--cds-gap-sm); padding-top: 6px; border-top: 1px solid var(--ar-line); }
+  .ar-cria-periodo { font-size: 11px; color: var(--ar-muted); font-variant-numeric: tabular-nums; }
+  .ar-cria-lista { display: flex; flex-direction: column; gap: 4px; min-height: 60px; }
+  .ar-cria-linha { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 10px; padding: 7px 10px; border: 1px solid var(--ar-line); border-radius: var(--cds-radius); background: var(--ar-panel-2); }
+  .ar-cria-linha .ar-cria-pos { font-family: var(--font-anthropic-serif); color: var(--ar-gold); font-size: 13px; }
+  .ar-cria-linha .ar-cria-n { font-size: 12px; color: var(--ar-text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ar-cria-linha .ar-cria-n small { display: block; font-size: 10px; color: var(--ar-muted); }
+  .ar-cria-linha b { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 1.1rem; color: var(--ar-gold); }
+  .ar-b2 .ar-cria-linha b, .ar-b2 .ar-cria-linha .ar-cria-pos { color: var(--ar-gold-2); }
+  .ar-janela-wrap { display: flex; justify-content: center; margin-bottom: calc(-1 * var(--cds-gap-sm)); }
+  .ar-janela button { padding: 7px 16px; font-size: 13px; }
+  .ar-janela .ar-ontem { background: rgba(0, 0, 0, .45); color: var(--ar-gold-2); box-shadow: inset 0 0 0 1px var(--ar-line); }
+  .ar-janela .ar-ontem[aria-pressed="true"] { background: #6E5320; color: var(--ar-text); box-shadow: inset 0 0 0 1px var(--ar-gold); }
+  .ar.pal-ebano .ar-janela .ar-ontem[aria-pressed="true"] { background: #5E4527; }
+  .ar.pal-grafite .ar-janela .ar-ontem[aria-pressed="true"] { background: #6B5A1E; }
+  .ar-sec-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--cds-gap-md); }
+  .ar-sec-row .ar-sec { margin: 0; }
+  .ar-lede { font-size: var(--cds-font-size-heading); line-height: 1.55; margin: 0; max-width: 62rem; }
+  .ar .ar-lede b, .ar .ar-ins b { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ar-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+  .ar-tile { background: var(--color-panel); border: 1px solid var(--color-border-line); border-top: 3px solid var(--ar-gold); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .ar-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: .06em; }
+  .ar-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 2rem; line-height: 1.1; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ar-foot { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .ar-up-good, .ar-down-good { font-weight: 600; }
+  .ar-good { color: var(--color-ok); } .ar-bad { color: var(--color-bad); } .ar-flat { color: var(--color-fg-muted); }
+  .ar-sec { font-size: var(--cds-font-size-caption); text-transform: uppercase; letter-spacing: .12em; color: var(--ar-gold); margin: 0 0 calc(-1 * var(--cds-gap-md)); font-weight: 600; }
+  .ar-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: var(--cds-gap-md); }
+  .ar-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+  .ar-card h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 4px; }
+  .ar-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0 0 var(--cds-gap-md); }
+  .ar-chart { position: relative; min-height: 280px; }
+  .ar-chart.ar-short { min-height: 200px; }
+  .ar-ins { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--cds-gap-sm); }
+  .ar-ins li { padding: var(--cds-pad-sm) 0 var(--cds-pad-sm) var(--cds-pad-md); border-left: 3px solid var(--ar-gold); line-height: 1.5; }
+  .ar-tip { position: absolute; z-index: 3; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ar-tip .ar-tip-h { color: var(--cds-text-secondary); margin-bottom: 2px; }
+  .ar-fail { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: inherit; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .ar-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+  .ar-hbar { display: grid; grid-template-columns: minmax(6rem, 9rem) 1fr; align-items: center; gap: var(--cds-gap-sm); margin-bottom: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); }
+  .ar-hbar-track { position: relative; height: 26px; }
+  .ar-hbar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--cds-radius); background: var(--ar-gold); }
+  .ar-hbar-fill.ar-alt { background: var(--cds-chart-muted); }
+  .ar-hbar-val { position: absolute; top: 50%; transform: translateY(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ar-legend { display: flex; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-bottom: var(--cds-gap-sm); }
+  .ar-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .ar-sw-gold { background: var(--ar-gold); } .ar-sw-muted { background: var(--cds-chart-muted); } .ar-sw-line { background: var(--color-fg); height: 2px !important; vertical-align: 3px !important; }
+  .ar-tablebox { max-height: 30rem; overflow: auto; }
+  .ar-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .ar-table th { position: sticky; top: 0; background: var(--color-panel); text-align: right; font-weight: 600; color: var(--color-fg-muted); padding: 8px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .ar-table td { text-align: right; padding: 8px; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .ar-table th:first-child, .ar-table td:first-child { text-align: left; white-space: normal; min-width: 12rem; }
+  .ar-table .ar-l { text-align: left; }
+  .ar-pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px; border: 1px solid var(--color-border-line); color: var(--color-fg-muted); }
+  .ar-pill.ar-on { border-color: var(--ar-gold); color: var(--ar-gold); }
+  .ar-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--cds-gap-md); border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .ar-footer strong { color: var(--ar-gold); letter-spacing: .12em; }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  @media (max-width: 560px) { .ar-big { font-size: 1.6rem; } .ar-hide-sm { display: none; } }
+</style>
+
+<div class="ar">
+  <header class="ar-head" id="topo">
+    <div class="ar-logo">
+      <img class="ar-logo-img" alt="AARO Advogados Associados" src="data:image/png;base64,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">
+    </div>
+    <p class="ar-head-titulo">Painel de Performance · AARO Advogados Associados</p>
+  </header>
+
+  <div class="ar-janela-wrap" id="periodo-frentes">
+    <div class="ar-seg ar-janela" role="group" aria-label="Período das frentes">
+      <button type="button" data-j="ontem" class="ar-ontem" aria-pressed="false">Ontem</button>
+      <button type="button" data-j="hoje" aria-pressed="false">Hoje</button>
+      <button type="button" data-j="7" aria-pressed="false">7 dias</button>
+      <button type="button" data-j="14" aria-pressed="false">14 dias</button>
+      <button type="button" data-j="30" aria-pressed="false">30 dias</button>
+      <button type="button" data-j="mes" aria-pressed="false">Mês passado</button>
+    </div>
+  </div>
+
+  <section class="ar-blocks" id="frentes" aria-label="Frentes">
+    <article class="ar-block" id="bloco-loas" data-bloco="loas">
+      <div class="ar-bhead">
+        <div>
+          <span class="ar-kicker">Frente 01</span>
+          <h2 class="ar-block-title">LOAS</h2>
+          <p class="ar-note">Benefício de Prestação Continuada · campanhas LOAS 63+ e 65+</p>
+        </div>
+        <div class="ar-bfiltro">
+          <div class="ar-dates">
+            <label>De <input type="date" data-draw="bloco-data" data-ponta="de" aria-label="LOAS, de" data-source="grupos_dia"></label>
+            <label>Até <input type="date" data-draw="bloco-data" data-ponta="ate" aria-label="LOAS, até" data-source="grupos_dia"></label>
+          </div>
+          <div class="ar-taxas">
+            <span>CTR <b data-draw="bloco-val" data-k="ctr" data-source="grupos_dia">—</b></span>
+            <span>Conversão <b data-draw="bloco-val" data-k="conv" data-source="grupos_dia">—</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="ar-bk">
+        <div><span class="ar-label">Leads</span><span class="ar-big" data-draw="bloco-val" data-k="leads" data-source="grupos_dia">—</span><span class="ar-foot" data-draw="bloco-delta" data-k="var_leads" data-good="up" data-source="grupos_dia">—</span></div>
+        <div><span class="ar-label">Custo por lead</span><span class="ar-big" data-draw="bloco-val" data-k="cpl" data-source="grupos_dia">—</span><span class="ar-foot" data-draw="bloco-delta" data-k="var_cpl" data-good="down" data-source="grupos_dia">—</span></div>
+        <div><span class="ar-label">Investido</span><span class="ar-big" data-draw="bloco-val" data-k="investimento" data-source="grupos_dia">—</span><span class="ar-foot" data-draw="bloco-delta" data-k="var_investimento" data-good="none" data-source="grupos_dia">—</span></div>
+        <div><span class="ar-label">Horário de pico</span><span class="ar-big" data-draw="bloco-val" data-k="pico" data-source="grupos_hora grupos_hora_mes">—</span><span class="ar-foot"><span data-draw="bloco-val" data-k="pico_leads" data-source="grupos_hora grupos_hora_mes">—</span> leads nessa faixa</span></div>
+      </div>
+      <div class="ar-funil dash-skeleton" data-draw="bloco-funil" data-source="grupos_dia"></div>
+      <div class="ar-chart dash-skeleton" data-draw="bloco-chart" data-source="grupos_hora grupos_dia grupos_hora_mes"></div>
+      <span data-draw="bloco-modo"></span>
+      <p class="ar-note" data-modo="hora">Cada ponto é um lead no seu horário (faixa de hora do Meta, horário de Brasília). Linha de baixo: leads por hora no período; <i class="ar-hi-key"></i>melhores horários. Média de <b data-draw="bloco-val" data-k="media" data-source="grupos_dia">—</b> leads por dia.</p>
+      <p class="ar-note" data-modo="dia" hidden>Ponto a ponto só nos últimos 15 dias; aqui, barras de leads por dia. A linha de baixo soma os leads por hora pelo perfil de horário de cada mês (meses pela metade, proporcionais); <i class="ar-hi-key"></i>melhores horários. Melhor dia: <b data-draw="bloco-val" data-k="melhor" data-source="grupos_dia">—</b>, com <b data-draw="bloco-val" data-k="melhor_leads" data-source="grupos_dia">—</b> leads. Linha tracejada: média do período.</p>
+    </article>
+
+    <article class="ar-block ar-b2" id="bloco-concessao" data-bloco="concessao">
+      <div class="ar-bhead">
+        <div>
+          <span class="ar-kicker">Frente 02</span>
+          <h2 class="ar-block-title">Concessão</h2>
+          <p class="ar-note">Concessão de benefícios do INSS · campanhas de Concessão</p>
+        </div>
+        <div class="ar-bfiltro">
+          <div class="ar-dates">
+            <label>De <input type="date" data-draw="bloco-data" data-ponta="de" aria-label="Concessão, de" data-source="grupos_dia"></label>
+            <label>Até <input type="date" data-draw="bloco-data" data-ponta="ate" aria-label="Concessão, até" data-source="grupos_dia"></label>
+          </div>
+          <div class="ar-taxas">
+            <span>CTR <b data-draw="bloco-val" data-k="ctr" data-source="grupos_dia">—</b></span>
+            <span>Conversão <b data-draw="bloco-val" data-k="conv" data-source="grupos_dia">—</b></span>
+          </div>
+        </div>
+      </div>
+      <div class="ar-bk">
+        <div><span class="ar-label">Leads</span><span class="ar-big" data-draw="bloco-val" data-k="leads" data-source="grupos_dia">—</span><span class="ar-foot" data-draw="bloco-delta" data-k="var_leads" data-good="up" data-source="grupos_dia">—</span></div>
+        <div><span class="ar-label">Custo por lead</span><span class="ar-big" data-draw="bloco-val" data-k="cpl" data-source="grupos_dia">—</span><span class="ar-foot" data-draw="bloco-delta" data-k="var_cpl" data-good="down" data-source="grupos_dia">—</span></div>
+        <div><span class="ar-label">Investido</span><span class="ar-big" data-draw="bloco-val" data-k="investimento" data-source="grupos_dia">—</span><span class="ar-foot" data-draw="bloco-delta" data-k="var_investimento" data-good="none" data-source="grupos_dia">—</span></div>
+        <div><span class="ar-label">Horário de pico</span><span class="ar-big" data-draw="bloco-val" data-k="pico" data-source="grupos_hora grupos_hora_mes">—</span><span class="ar-foot"><span data-draw="bloco-val" data-k="pico_leads" data-source="grupos_hora grupos_hora_mes">—</span> leads nessa faixa</span></div>
+      </div>
+      <div class="ar-funil dash-skeleton" data-draw="bloco-funil" data-source="grupos_dia"></div>
+      <div class="ar-chart dash-skeleton" data-draw="bloco-chart" data-source="grupos_hora grupos_dia grupos_hora_mes"></div>
+      <span data-draw="bloco-modo"></span>
+      <p class="ar-note" data-modo="hora">Cada ponto é um lead no seu horário (faixa de hora do Meta, horário de Brasília). Linha de baixo: leads por hora no período; <i class="ar-hi-key"></i>melhores horários. Média de <b data-draw="bloco-val" data-k="media" data-source="grupos_dia">—</b> leads por dia.</p>
+      <p class="ar-note" data-modo="dia" hidden>Ponto a ponto só nos últimos 15 dias; aqui, barras de leads por dia. A linha de baixo soma os leads por hora pelo perfil de horário de cada mês (meses pela metade, proporcionais); <i class="ar-hi-key"></i>melhores horários. Melhor dia: <b data-draw="bloco-val" data-k="melhor" data-source="grupos_dia">—</b>, com <b data-draw="bloco-val" data-k="melhor_leads" data-source="grupos_dia">—</b> leads. Linha tracejada: média do período.</p>
+    </article>
+  </section>
+
+  <section class="ar-blocks" id="perfis" aria-label="Perfil do público">
+    <article class="ar-block ar-perfil" id="perfil-loas" data-bloco="loas">
+      <div class="ar-bhead ar-bhead-centro">
+        <div>
+          <span class="ar-kicker">Perfil · LOAS</span>
+          <h2 class="ar-block-title">Quando e quem vira lead</h2>
+          <p class="ar-note">Mesmo período do quadro acima</p>
+        </div>
+      </div>
+      <div class="ar-genero dash-skeleton" data-draw="perfil-genero" data-source="perfil_dia perfil_mes"></div>
+      <div class="ar-chart dash-skeleton" data-draw="perfil-semana" data-source="grupos_dia grupos_hora grupos_hora_mes perfil_dia perfil_mes"></div>
+      <p class="ar-note">Cada célula soma os leads daquele dia da semana naquela hora: rosé = mulheres, dourado = homens; contorno <i class="ar-hi-key"></i> = os 3 melhores horários. O total de cada hora é real; a divisão por gênero dentro da hora segue o gênero do dia, porque o Meta não cruza horário com gênero. Nos últimos 15 dias o horário é exato; antes disso, o total de cada dia é distribuído pelo perfil de horário do mês. Gênero não informado fica de fora.</p>
+    </article>
+
+    <article class="ar-block ar-perfil ar-b2" id="perfil-concessao" data-bloco="concessao">
+      <div class="ar-bhead ar-bhead-centro">
+        <div>
+          <span class="ar-kicker">Perfil · Concessão</span>
+          <h2 class="ar-block-title">Quando e quem vira lead</h2>
+          <p class="ar-note">Mesmo período do quadro acima</p>
+        </div>
+      </div>
+      <div class="ar-genero dash-skeleton" data-draw="perfil-genero" data-source="perfil_dia perfil_mes"></div>
+      <div class="ar-chart dash-skeleton" data-draw="perfil-semana" data-source="grupos_dia grupos_hora grupos_hora_mes perfil_dia perfil_mes"></div>
+      <p class="ar-note">Cada célula soma os leads daquele dia da semana naquela hora: rosé = mulheres, dourado = homens; contorno <i class="ar-hi-key"></i> = os 3 melhores horários. O total de cada hora é real; a divisão por gênero dentro da hora segue o gênero do dia, porque o Meta não cruza horário com gênero. Nos últimos 15 dias o horário é exato; antes disso, o total de cada dia é distribuído pelo perfil de horário do mês. Gênero não informado fica de fora.</p>
+    </article>
+  </section>
+
+  <section class="ar-blocks" id="criativos" aria-label="Criativos em destaque">
+    <article class="ar-block" id="criativos-loas" data-bloco="loas">
+      <div class="ar-bhead ar-bhead-centro">
+        <div>
+          <span class="ar-kicker">Criativos · LOAS</span>
+          <h2 class="ar-block-title">Destaques do mês</h2>
+          <p class="ar-note">Independente do filtro de cima: sempre o mês vigente</p>
+        </div>
+      </div>
+      <div class="ar-cria-sec">
+        <span class="ar-label">Acumulado do mês</span>
+        <span class="ar-cria-periodo" data-draw="cria-periodo" data-source="criativos_dia">—</span>
+      </div>
+      <div class="ar-cria dash-skeleton" data-draw="criativos-mes" data-source="criativos_dia"></div>
+      <div class="ar-cria-sec">
+        <span class="ar-label">Por dia</span>
+        <label class="ar-dates">Dia <input type="date" data-draw="cria-data" aria-label="LOAS, dia dos criativos" data-source="criativos_dia"></label>
+      </div>
+      <div class="ar-cria-lista dash-skeleton" data-draw="criativos-dia" data-source="criativos_dia"></div>
+      <p class="ar-note">Leads por criativo (anúncios com o mesmo nome somados). No último dia do mês, o acumulado vira o total do mês.</p>
+    </article>
+
+    <article class="ar-block ar-b2" id="criativos-concessao" data-bloco="concessao">
+      <div class="ar-bhead ar-bhead-centro">
+        <div>
+          <span class="ar-kicker">Criativos · Concessão</span>
+          <h2 class="ar-block-title">Destaques do mês</h2>
+          <p class="ar-note">Independente do filtro de cima: sempre o mês vigente</p>
+        </div>
+      </div>
+      <div class="ar-cria-sec">
+        <span class="ar-label">Acumulado do mês</span>
+        <span class="ar-cria-periodo" data-draw="cria-periodo" data-source="criativos_dia">—</span>
+      </div>
+      <div class="ar-cria dash-skeleton" data-draw="criativos-mes" data-source="criativos_dia"></div>
+      <div class="ar-cria-sec">
+        <span class="ar-label">Por dia</span>
+        <label class="ar-dates">Dia <input type="date" data-draw="cria-data" aria-label="Concessão, dia dos criativos" data-source="criativos_dia"></label>
+      </div>
+      <div class="ar-cria-lista dash-skeleton" data-draw="criativos-dia" data-source="criativos_dia"></div>
+      <p class="ar-note">Leads por criativo (anúncios com o mesmo nome somados). No último dia do mês, o acumulado vira o total do mês.</p>
+    </article>
+  </section>
+
+</div>
+
+<script src="prints.js"></script>
+<script>
+  const LOADER = __LOADER__;
+  ['camp_dia_atual', 'camp_dia_anterior', 'hora_14d', 'hora_hoje', 'hora_mes_loas_atual', 'hora_mes_loas_ant', 'hora_mes_conc_atual', 'hora_mes_conc_ant', 'perfil_14d', 'perfil_hoje', 'perfil_mes_loas_atual', 'perfil_mes_loas_ant', 'perfil_mes_conc_atual', 'perfil_mes_conc_ant', 'ads_mes'].forEach((id) => {
+    dash.loader(id, { description: 'A resposta do Meta Ads (ad_entities) como tabela: valores em R$ e porcentagens viram números.', fn: LOADER });
+  });
+</script>
+
+<script>
+  dash.calc('grupos_dia', {
+    inputs: ['camp_dia_atual', 'camp_dia_anterior'],
+    title: 'Leads por dia: LOAS e Concessão',
+    description: 'Soma diária de leads, investimento, impressões e cliques no link das campanhas com LOAS ou Concessão no nome; as demais campanhas ficam de fora.',
+    fn: (camp_dia_atual, camp_dia_anterior) => {
+      const grupo = (n) => { const s = String(n || '').toUpperCase(); return s.includes('LOAS') ? 'loas' : s.includes('CONCESS') ? 'concessao' : null; };
+      const acc = new Map();
+      camp_dia_anterior.concat(camp_dia_atual).forEach((r) => {
+        const g = grupo(r.name);
+        const d = String(r.date_start || '').slice(0, 10);
+        if (!g || !d) return;
+        const k = g + '|' + d;
+        const o = acc.get(k) || { grupo: g, dia: d, leads: 0, investimento: 0, impressoes: 0, cliques: 0 };
+        o.leads += r.lead || 0;
+        o.investimento += r.amount_spent || 0;
+        o.impressoes += r.impressions || 0;
+        o.cliques += r.link_click || 0;
+        acc.set(k, o);
+      });
+      return Array.from(acc.values()).sort((a, b) => (a.dia < b.dia ? -1 : a.dia > b.dia ? 1 : a.grupo < b.grupo ? -1 : 1));
+    },
+  });
+
+  dash.calc('grupos_hora', {
+    inputs: ['hora_14d', 'hora_hoje'],
+    title: 'Leads por hora: LOAS e Concessão',
+    description: 'Leads de cada faixa de hora, por dia, das campanhas com LOAS ou Concessão no nome (últimos 14 dias e hoje).',
+    fn: (hora_14d, hora_hoje) => {
+      const grupo = (n) => { const s = String(n || '').toUpperCase(); return s.includes('LOAS') ? 'loas' : s.includes('CONCESS') ? 'concessao' : null; };
+      const acc = new Map();
+      hora_14d.concat(hora_hoje).forEach((r) => {
+        const g = grupo(r.name);
+        const d = String(r.date_start || '').slice(0, 10);
+        const h = parseInt(String(r.hourly_stats_aggregated_by_advertiser_time_zone || '').slice(0, 2), 10);
+        if (!g || !d || !Number.isFinite(h) || !(r.lead > 0)) return;
+        const k = g + '|' + d + '|' + h;
+        const o = acc.get(k) || { grupo: g, dia: d, hora: h, leads: 0, campanhas: '' };
+        o.leads += r.lead;
+        if (!o.campanhas.includes(r.name)) o.campanhas = o.campanhas ? o.campanhas + ' · ' + r.name : r.name;
+        acc.set(k, o);
+      });
+      return Array.from(acc.values()).sort((a, b) => (a.dia < b.dia ? -1 : a.dia > b.dia ? 1 : a.hora - b.hora));
+    },
+  });
+
+  dash.calc('criativos_dia', {
+    inputs: ['ads_mes'],
+    title: 'Leads por criativo, por dia',
+    description: 'Leads de cada anúncio das campanhas LOAS e Concessão, dia a dia no mês vigente; anúncios com o mesmo nome são somados.',
+    fn: (ads_mes) => {
+      const grupo = (n) => { const s = String(n || '').toUpperCase(); return s.includes('LOAS') ? 'loas' : s.includes('CONCESS') ? 'concessao' : null; };
+      const acc = new Map();
+      ads_mes.forEach((r) => {
+        const g = grupo(r.campaign_name);
+        const d = String(r.date_start || '').slice(0, 10);
+        if (!g || !d || !(r.lead > 0)) return;
+        const nome = String(r.name || '').trim();
+        const k = g + '|' + d + '|' + nome;
+        const o = acc.get(k) || { grupo: g, dia: d, nome, campanha: r.campaign_name, creative_id: r.creative_id, leads: 0 };
+        o.leads += r.lead;
+        acc.set(k, o);
+      });
+      return Array.from(acc.values()).sort((a, b) => (a.dia < b.dia ? -1 : a.dia > b.dia ? 1 : 0));
+    },
+  });
+
+  dash.calc('perfil_dia', {
+    inputs: ['perfil_14d', 'perfil_hoje'],
+    title: 'Idade e sexo por dia: LOAS e Concessão',
+    description: 'Leads por faixa de idade e sexo, dia a dia, das campanhas LOAS e Concessão (últimos 14 dias e hoje).',
+    fn: (perfil_14d, perfil_hoje) => {
+      const grupo = (n) => { const s = String(n || '').toUpperCase(); return s.includes('LOAS') ? 'loas' : s.includes('CONCESS') ? 'concessao' : null; };
+      const acc = new Map();
+      perfil_14d.concat(perfil_hoje).forEach((r) => {
+        const g = grupo(r.name);
+        const d = String(r.date_start || '').slice(0, 10);
+        if (!g || !d || !(r.lead > 0) || !r.age || r.age === 'null') return;
+        const k = [g, d, r.age, r.gender].join('|');
+        const o = acc.get(k) || { grupo: g, dia: d, idade: r.age, sexo: r.gender, leads: 0 };
+        o.leads += r.lead;
+        acc.set(k, o);
+      });
+      return Array.from(acc.values()).sort((a, b) => (a.dia < b.dia ? -1 : a.dia > b.dia ? 1 : 0));
+    },
+  });
+
+  dash.calc('perfil_mes', {
+    inputs: ['perfil_mes_loas_atual', 'perfil_mes_loas_ant', 'perfil_mes_conc_atual', 'perfil_mes_conc_ant'],
+    title: 'Idade e sexo por mês',
+    description: 'Leads por faixa de idade e sexo, somados por mês, das campanhas LOAS e Concessão; dá o perfil de períodos maiores que 15 dias.',
+    fn: (perfil_mes_loas_atual, perfil_mes_loas_ant, perfil_mes_conc_atual, perfil_mes_conc_ant) => {
+      const acc = new Map();
+      const add = (rows, g) => rows.forEach((r) => {
+        const ms = String(r.date_start || '').slice(0, 7);
+        if (!ms || !(r.lead > 0) || !r.age || r.age === 'null') return;
+        const k = [g, ms, r.age, r.gender].join('|');
+        const o = acc.get(k) || { grupo: g, mes: ms, idade: r.age, sexo: r.gender, leads: 0 };
+        o.leads += r.lead;
+        acc.set(k, o);
+      });
+      add(perfil_mes_loas_ant, 'loas'); add(perfil_mes_loas_atual, 'loas');
+      add(perfil_mes_conc_ant, 'concessao'); add(perfil_mes_conc_atual, 'concessao');
+      return Array.from(acc.values()).sort((a, b) => (a.mes < b.mes ? -1 : a.mes > b.mes ? 1 : 0));
+    },
+  });
+
+  dash.calc('grupos_hora_mes', {
+    inputs: ['hora_mes_loas_atual', 'hora_mes_loas_ant', 'hora_mes_conc_atual', 'hora_mes_conc_ant'],
+    title: 'Perfil de horário por mês',
+    description: 'Leads de cada faixa de hora, somados por mês, das campanhas LOAS e Concessão; dá a soma por hora de períodos maiores que 15 dias.',
+    fn: (hora_mes_loas_atual, hora_mes_loas_ant, hora_mes_conc_atual, hora_mes_conc_ant) => {
+      const acc = new Map();
+      const add = (rows, g) => rows.forEach((r) => {
+        const h = parseInt(String(r.hourly_stats_aggregated_by_advertiser_time_zone || '').slice(0, 2), 10);
+        const ms = String(r.date_start || '').slice(0, 7);
+        if (!Number.isFinite(h) || !ms || !(r.lead > 0)) return;
+        const k = g + '|' + ms + '|' + h;
+        const o = acc.get(k) || { grupo: g, mes: ms, hora: h, leads: 0 };
+        o.leads += r.lead;
+        acc.set(k, o);
+      });
+      add(hora_mes_loas_ant, 'loas'); add(hora_mes_loas_atual, 'loas');
+      add(hora_mes_conc_ant, 'concessao'); add(hora_mes_conc_atual, 'concessao');
+      return Array.from(acc.values()).sort((a, b) => (a.mes < b.mes ? -1 : a.mes > b.mes ? 1 : a.hora - b.hora));
+    },
+  });
+
+</script>
+
+<script>
+  const nf = (o) => new Intl.NumberFormat('pt-BR', o);
+  const F = {
+    brl: nf({ style: 'currency', currency: 'BRL' }),
+    brl0: nf({ style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }),
+    int: nf({ maximumFractionDigits: 0 }),
+    dec1: nf({ minimumFractionDigits: 1, maximumFractionDigits: 1 }),
+    dec2: nf({ minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+    compact: nf({ notation: 'compact', maximumFractionDigits: 1 }),
+  };
+  const fmt = (kind, v) => {
+    if (v == null || v === '' || (typeof v === 'number' && !Number.isFinite(v))) return '—';
+    if (kind === 'text') return String(v);
+    if (kind === 'date') { const s = String(v); return s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4); }
+    if (kind === 'pct') return F.dec2.format(v) + '%';
+    if (kind === 'compact' && Math.abs(v) < 10000) return F.int.format(v);
+    return (F[kind] || F.int).format(v);
+  };
+  window.arFmt = fmt;
+
+</script>
+
+<script>
+  window.arState = (el, ids) => {
+    const st = ids.map((id) => dash.data(id).status);
+    el.classList.toggle('dash-skeleton', st.includes('loading'));
+    if (st.every((s) => s === 'ok')) return true;
+    if (st.some((s) => s === 'error' || s === 'connect' || s === 'declined')) {
+      const f = document.createElement('div'); f.className = 'ar-fail'; f.textContent = 'Falha ao carregar'; el.append(f);
+    }
+    return false;
+  };
+  window.arTip = (el) => {
+    const tip = document.createElement('div'); tip.className = 'ar-tip'; tip.hidden = true; el.append(tip);
+    return {
+      show(ev, head, lines) {
+        tip.replaceChildren();
+        const h = document.createElement('div'); h.className = 'ar-tip-h'; h.textContent = head; tip.append(h);
+        lines.forEach((t) => { const l = document.createElement('div'); l.textContent = t; tip.append(l); });
+        tip.hidden = false;
+        const b = el.getBoundingClientRect();
+        let x = ev.clientX - b.left + 12; const y = ev.clientY - b.top + 12;
+        if (x + tip.offsetWidth > b.width) x = Math.max(0, ev.clientX - b.left - tip.offsetWidth - 12);
+        tip.style.left = x + 'px'; tip.style.top = Math.min(y, b.height - tip.offsetHeight) + 'px';
+      },
+      hide() { tip.hidden = true; },
+    };
+  };
+
+</script>
+
+<script>
+  const addD = (s, n) => { const d = new Date(s + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
+  const nDias = (a, b) => Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 864e5) + 1;
+  window.arBloco = (pfx) => {
+    const g = dash.data('grupos_dia');
+    if (g.status !== 'ok') return { status: g.status };
+    const all = Array.isArray(g.data) ? g.data : [];
+    if (!all.length) return { status: 'empty' };
+    const max = d3.max(all, (r) => r.dia), dataMin = d3.min(all, (r) => r.dia);
+    const min = addD(max, -364) > dataMin ? addD(max, -364) : dataMin;
+    const p = dash.params();
+    const custom = !!(p[pfx + '_de'] || p[pfx + '_ate']);
+    let ate = p[pfx + '_ate'] || max;
+    if (ate > max) ate = max;
+    if (ate < min) ate = min;
+    const dias = Number(p[pfx + '_dias']) || 1;
+    let de = p[pfx + '_de'] || addD(ate, 1 - dias);
+    if (de < min) de = min;
+    if (de > ate) de = ate;
+    const n = nDias(de, ate);
+    const byDay = new Map(all.filter((r) => r.grupo === pfx).map((r) => [r.dia, r]));
+    const serie = [];
+    for (let d = de; d <= ate; d = addD(d, 1)) { const r = byDay.get(d) || {}; serie.push({ dia: d, leads: r.leads || 0, investimento: r.investimento || 0, impressoes: r.impressoes || 0, cliques: r.cliques || 0 }); }
+    const sum = (a, b) => { let l = 0, s = 0; for (let d = a; d <= b; d = addD(d, 1)) { const r = byDay.get(d); if (r) { l += r.leads; s += r.investimento; } } return { l, s }; };
+    const cur = { l: d3.sum(serie, (r) => r.leads), s: d3.sum(serie, (r) => r.investimento), i: d3.sum(serie, (r) => r.impressoes), c: d3.sum(serie, (r) => r.cliques) };
+    const pde = addD(de, -n);
+    const prev = pde >= dataMin ? sum(pde, addD(de, -1)) : null;
+    const pct = (a, b) => (a != null && b ? ((a - b) / b) * 100 : null);
+    const cpl = cur.l ? cur.s / cur.l : null;
+    const pcpl = prev && prev.l ? prev.s / prev.l : null;
+    const best = serie.reduce((b, r) => (r.leads > (b ? b.leads : -1) ? r : b), null);
+    const hoje = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+    const andamento = ate >= hoje;
+    const cobertura = addD(max, -14);
+    const gh = dash.data('grupos_hora');
+    const horaOk = gh.status === 'ok';
+    const temHora = de >= cobertura;
+    const horas = horaOk && temHora ? (gh.data || []).filter((r) => r.grupo === pfx && r.dia >= de && r.dia <= ate) : [];
+    let leadsHora = d3.range(24).map(() => 0);
+    let horaPronta = temHora ? horaOk : false;
+    let estimado = false;
+    if (temHora) {
+      horas.forEach((r) => { leadsHora[r.hora] += r.leads; });
+    } else {
+      const hm = dash.data('grupos_hora_mes');
+      const hdOk = horaOk;
+      if (hm.status === 'ok') {
+        horaPronta = true;
+        const perfil = new Map();
+        (hm.data || []).filter((r) => r.grupo === pfx).forEach((r) => {
+          if (!perfil.has(r.mes)) perfil.set(r.mes, d3.range(24).map(() => 0));
+          perfil.get(r.mes)[r.hora] += r.leads;
+        });
+        const exato = new Map();
+        if (hdOk) (gh.data || []).filter((r) => r.grupo === pfx && r.dia >= cobertura).forEach((r) => {
+          if (!exato.has(r.dia)) exato.set(r.dia, d3.range(24).map(() => 0));
+          exato.get(r.dia)[r.hora] += r.leads;
+        });
+        const fimMes = (ms) => addD(addD(ms + '-01', 32).slice(0, 7) + '-01', -1);
+        const frac = d3.range(24).map(() => 0);
+        serie.forEach((r) => {
+          if (!r.leads) return;
+          if (hdOk && r.dia >= cobertura) {
+            const e = exato.get(r.dia) || d3.range(24).map(() => 0);
+            e.forEach((v, h) => { frac[h] += v; });
+            return;
+          }
+          const ms = r.dia.slice(0, 7);
+          const p = perfil.get(ms);
+          const tot = p ? d3.sum(p) : 0;
+          if (!tot) return;
+          if (ms + '-01' < de || fimMes(ms) > ate) estimado = true;
+          p.forEach((v, h) => { frac[h] += (r.leads * v) / tot; });
+        });
+        const alvo = Math.round(d3.sum(frac));
+        const base = frac.map((v) => Math.floor(v));
+        let falta = alvo - d3.sum(base);
+        frac.map((v, h) => [v - Math.floor(v), h]).sort((a, b) => b[0] - a[0]).forEach(([, h]) => { if (falta > 0) { base[h] += 1; falta -= 1; } });
+        leadsHora = base;
+      }
+    }
+    const porHora = new Map(leadsHora.map((v, h) => [h, v]));
+    let pico = null;
+    porHora.forEach((v, h) => { if (v > 0 && (pico == null || v > porHora.get(pico))) pico = h; });
+    const ordem = Array.from(porHora.entries()).filter((e) => e[1] > 0).sort((a, b) => b[1] - a[1] || a[0] - b[0]);
+    const corte = ordem.length ? ordem[Math.min(2, ordem.length - 1)][1] : Infinity;
+    const melhores = new Set(ordem.filter((e) => e[1] >= corte).map((e) => e[0]));
+    return {
+      status: 'ok', de, ate, min, max, dias: custom ? null : dias, serie, andamento, temHora, horaStatus: horaPronta ? 'ok' : 'loading', horas, melhores, leadsHora, estimado,
+      impressoes: cur.i, cliques: cur.c, ctr: cur.i ? (cur.c / cur.i) * 100 : null, conv: cur.c ? (cur.l / cur.c) * 100 : null,
+      pico: pico == null ? null : String(pico).padStart(2, '0') + 'h',
+      pico_leads: pico != null ? porHora.get(pico) : null,
+      leads: cur.l, investimento: cur.s, cpl, media: cur.l / n,
+      var_leads: prev && !andamento ? pct(cur.l, prev.l) : null,
+      var_investimento: prev && !andamento ? pct(cur.s, prev.s) : null,
+      var_cpl: cpl != null && pcpl != null ? pct(cpl, pcpl) : null,
+      melhor: best && best.leads > 0 ? best.dia : null,
+      melhor_leads: best && best.leads > 0 ? best.leads : null,
+    };
+  };
+  const blocoDe = (el) => (el.closest('[data-bloco]') || {}).dataset || {};
+  const kFmt = { leads: 'int', cpl: 'brl', investimento: 'brl0', media: 'dec1', melhor: 'date', melhor_leads: 'int', pico: 'text', pico_leads: 'int', ctr: 'pct', conv: 'pct' };
+
+  dash.draw('bloco-val', (el) => {
+    const s = arBloco(blocoDe(el).bloco);
+    el.classList.toggle('dash-skeleton', s.status === 'loading');
+    el.classList.toggle('dash-skeleton', s.status === 'loading' || ((el.dataset.k === 'pico' || el.dataset.k === 'pico_leads') && s.horaStatus === 'loading'));
+    el.textContent = s.status === 'ok' ? arFmt(kFmt[el.dataset.k], s[el.dataset.k]) : '—';
+  });
+
+  dash.draw('bloco-delta', (el) => {
+    const s = arBloco(blocoDe(el).bloco);
+    el.classList.remove('ar-good', 'ar-bad', 'ar-flat');
+    const v = s.status === 'ok' ? s[el.dataset.k] : null;
+    if (v == null || !Number.isFinite(v)) { el.textContent = s.status !== 'ok' ? '—' : s.andamento && el.dataset.k !== 'var_cpl' ? 'dia em andamento' : 'sem base de comparação'; el.classList.add('ar-flat'); return; }
+    const g = el.dataset.good;
+    const flat = Math.abs(v) < 0.5;
+    el.classList.add(flat || g === 'none' ? 'ar-flat' : (v > 0) === (g === 'up') ? 'ar-good' : 'ar-bad');
+    el.textContent = (flat ? '● ' : v > 0 ? '▲ +' : '▼ ') + new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v) + '% vs. anterior';
+  });
+
+  dash.draw('bloco-data', (el) => {
+    const s = arBloco(blocoDe(el).bloco);
+    if (s.status !== 'ok') { el.disabled = true; return; }
+    el.disabled = false;
+    el.min = s.min;
+    el.max = s.max;
+    if (el !== document.activeElement) el.value = el.dataset.ponta === 'de' ? s.de : s.ate;
+  });
+
+  dash.draw('bloco-modo', (el) => {
+    const b = el.closest('[data-bloco]');
+    const s = arBloco(b.dataset.bloco);
+    const modo = s.status === 'ok' && !s.temHora ? 'dia' : 'hora';
+    b.querySelectorAll('[data-modo]').forEach((p) => { p.hidden = p.dataset.modo !== modo; });
+  });
+
+  dash.draw('bloco-funil', (el) => {
+    el.replaceChildren();
+    if (!arState(el, ['grupos_dia'])) return;
+    const pfx = blocoDe(el).bloco;
+    const s = arBloco(pfx);
+    if (s.status !== 'ok') return;
+    const fmt = arFmt;
+    const cor = pfx === 'loas' ? 'var(--ar-gold)' : 'var(--ar-gold-2)';
+    const W = Math.max(280, el.clientWidth), H = 58;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block');
+    const chave = 'funil|' + pfx + '|' + s.de + '|' + s.ate + '|' + s.leads;
+    if (!arAnimVisto.has(chave)) { arAnimVisto.add(chave); svg.classed('ar-anim', true); }
+    const etapas = [
+      { nome: 'Topo · Impressões', v: s.impressoes, op: 0.2 },
+      { nome: 'Meio · Cliques', v: s.cliques, op: 0.42 },
+      { nome: 'Fundo · Leads', v: s.leads, op: 0.85 },
+    ];
+    const taxas = ['CTR ' + fmt('pct', s.ctr), 'Conversão ' + fmt('pct', s.conv)];
+    const alt = [1, 0.78, 0.58, 0.42].map((k) => H * k);
+    const gap = 3, segW = (W - gap * 2) / 3;
+    const defs = svg.append('defs');
+    const tip = arTip(el);
+    etapas.forEach((e, i) => {
+      const x0 = i * (segW + gap), x1 = x0 + segW, xm = (x0 + x1) / 2;
+      const hl = alt[i], hr = alt[i + 1];
+      const tl = (H - hl) / 2, tr = (H - hr) / 2, bl = (H + hl) / 2, br = (H + hr) / 2;
+      const d = `M${x0},${tl} C${xm},${tl} ${xm},${tr} ${x1},${tr} L${x1},${br} C${xm},${br} ${xm},${bl} ${x0},${bl} Z`;
+      const gid = 'ar-fg-' + pfx + '-' + i;
+      const lg = defs.append('linearGradient').attr('id', gid).attr('x1', 0).attr('x2', 1).attr('y1', 0).attr('y2', 0);
+      lg.append('stop').attr('offset', '0%').style('stop-color', cor).style('stop-opacity', e.op * 0.7);
+      lg.append('stop').attr('offset', '100%').style('stop-color', cor).style('stop-opacity', e.op);
+      const g = svg.append('g').attr('class', 'ar-cel').style('--d', (i * 0.12).toFixed(2) + 's');
+      g.append('path').attr('d', d).style('fill', `url(#${gid})`).style('stroke', cor).attr('stroke-opacity', 0.55).attr('stroke-width', 0.8)
+        .on('pointermove', (ev) => tip.show(ev, e.nome, [fmt('int', e.v)].concat(i ? [taxas[i - 1] + ' (da etapa anterior)'] : [])))
+        .on('pointerleave', () => tip.hide());
+      const escuro = i === 2;
+      g.append('text').attr('x', x0 + 10).attr('y', H / 2 - 4).attr('font-size', 9).attr('letter-spacing', '.08em').style('fill', escuro ? 'var(--ar-bg)' : 'var(--color-fg-muted)').style('pointer-events', 'none').text(e.nome.toUpperCase());
+      g.append('text').attr('x', x0 + 10).attr('y', H / 2 + 12).attr('font-size', 15).style('font-family', 'var(--font-anthropic-serif)').style('fill', escuro ? 'var(--ar-bg)' : 'var(--color-fg)').style('pointer-events', 'none').text(e.v >= 10000 ? new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(e.v) : fmt('int', e.v));
+    });
+  });
+
+  window.arFaixa = (g, o) => {
+    const { s, hi, faixaH, totalW, cor, measure, fmt } = o;
+    const fy = o.fy;
+    const fx = d3.scaleBand(d3.range(24), [o.x0, o.x1]).paddingInner(0.08);
+    g.append('text').attr('x', o.x0 - 8).attr('y', fy + 9).attr('text-anchor', 'end').attr('font-size', 9).style('fill', 'var(--color-fg-muted)').text('leads');
+    const cel = g.selectAll('g.fh').data(s.leadsHora.map((v, h) => ({ h, v }))).join('g').attr('transform', (d) => `translate(${fx(d.h)},${fy})`);
+    cel.append('rect').attr('width', fx.bandwidth()).attr('height', faixaH - 6).attr('rx', 3).style('fill', (d) => (hi.has(d.h) ? 'var(--ar-hi)' : 'var(--ar-panel-2)')).attr('opacity', (d) => (hi.has(d.h) ? 0.22 : 1)).style('stroke', (d) => (hi.has(d.h) ? 'var(--ar-hi)' : 'var(--ar-line)')).attr('stroke-width', 0.8);
+    const minCel = fx.bandwidth() >= measure('00') * 0.85;
+    const pequeno = fx.bandwidth() < measure('000') * 0.9;
+    cel.append('text').attr('x', fx.bandwidth() / 2).attr('y', 11).attr('text-anchor', 'middle').attr('font-size', pequeno ? 8 : 10).attr('font-weight', (d) => (hi.has(d.h) ? 700 : 400)).style('fill', (d) => (hi.has(d.h) ? 'var(--ar-hi)' : d.v ? 'var(--color-fg)' : 'var(--ar-quiet)')).text((d) => d.v);
+    const tg = g.append('g').attr('transform', `translate(${o.x1 + 8},${fy})`);
+    tg.append('rect').attr('width', totalW - 2).attr('height', faixaH - 6).attr('rx', 3).style('fill', cor).attr('opacity', 0.16).style('stroke', cor).attr('stroke-width', 0.8);
+    tg.append('text').attr('x', (totalW - 2) / 2).attr('y', 11).attr('text-anchor', 'middle').attr('font-size', 11).attr('font-weight', 700).style('fill', cor).text(fmt('int', d3.sum(s.leadsHora)));
+    tg.append('text').attr('x', (totalW - 2) / 2).attr('y', 21).attr('text-anchor', 'middle').attr('font-size', 8).style('fill', 'var(--color-fg-muted)').text('TOTAL');
+    if (minCel) cel.append('text').attr('x', fx.bandwidth() / 2).attr('y', 21).attr('text-anchor', 'middle').attr('font-size', 8).style('fill', 'var(--color-fg-muted)').text((d) => String(d.h).padStart(2, '0') + 'h');
+  };
+
+  window.arAnimVisto = window.arAnimVisto || new Set();
+  const horaChart = (el, pfx, s) => {
+    const fmt = arFmt;
+    const cor = pfx === 'loas' ? 'var(--ar-gold)' : 'var(--ar-gold-2)';
+    const hojeD = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+    const t0 = new Date(s.de + 'T00:00:00Z'), t1 = new Date(addD(s.ate, 1) + 'T00:00:00Z');
+    const W = Math.max(280, el.clientWidth), H = 196, faixaH = 30;
+    const nd = nDias(s.de, s.ate);
+    const hi = s.melhores;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block').style('overflow', 'visible');
+    const measure = (t) => { const n = svg.append('text').attr('font-size', 12).text(t); const w = n.node().getComputedTextLength(); n.remove(); return w; };
+    const totalTxt = 'Total ' + fmt('int', d3.sum(s.leadsHora));
+    const totalW = Math.max(56, measure(totalTxt) + 14);
+    const m = { t: 6, b: 36 + faixaH, l: measure('00h') + 12, r: totalW + 8 };
+    const x = d3.scaleUtc([t0, t1], [m.l, W - m.r]);
+    const y = d3.scaleLinear([0, 24], [m.t, H - m.b]);
+    const g = svg.append('g');
+    const hStep = nd === 1 ? 3 : 6;
+    const yT = d3.range(0, 25, 3);
+    g.selectAll('rect.hib').data(Array.from(hi)).join('rect').attr('x', m.l).attr('width', W - m.l - m.r).attr('y', (h) => y(h)).attr('height', y(1) - y(0)).style('fill', 'var(--ar-hi)').attr('opacity', 0.1);
+    g.selectAll('line.gy').data(yT).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
+    g.selectAll('text.yl').data(yT.filter((h) => h < 24)).join('text').attr('x', m.l - 8).attr('y', (h) => y(h)).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 12).style('fill', 'var(--color-fg-muted)').text((h) => String(h).padStart(2, '0') + 'h');
+    const dias = d3.utcDay.range(t0, t1);
+    g.selectAll('line.gd').data(dias.slice(1)).join('line').attr('x1', x).attr('x2', x).attr('y1', m.t).attr('y2', H - m.b + 18).style('stroke', 'var(--cds-chart-axis)');
+    g.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', H - m.b).attr('y2', H - m.b).style('stroke', 'var(--cds-chart-axis)');
+    const pxPorHora = (W - m.l - m.r) / (nd * 24);
+    const minGap = measure('00h') + 8;
+    const passo = [1, 2, 3, 6, 12, 24].find((h) => h * pxPorHora >= minGap);
+    if (passo && passo < 24) {
+      const horasT = d3.utcHour.every(passo).range(t0, t1);
+      g.selectAll('text.xh').data(horasT).join('text').attr('x', (d) => x(d) + 2).attr('y', H - m.b + 13).attr('font-size', 10).style('fill', 'var(--color-fg-muted)').text((d) => String(d.getUTCHours()).padStart(2, '0') + 'h');
+    }
+    const largDia = (W - m.l - m.r) / nd;
+    const diaPasso = Math.max(1, Math.ceil((measure('00/00') + 10) / largDia));
+    g.selectAll('text.xd').data(dias.filter((d, i) => i % diaPasso === 0)).join('text').attr('x', (d) => x(d) + 2).attr('y', H - m.b + 27).attr('font-size', 11).attr('font-weight', 600).style('fill', 'var(--color-fg)').text((d) => d3.utcFormat('%d/%m')(d));
+    const pontos = [];
+    s.horas.forEach((r) => {
+      for (let i = 0; i < r.leads; i++) {
+        const frac = (i + 0.5) / r.leads;
+        pontos.push({ r, t: new Date(Date.parse(r.dia + 'T00:00:00Z') + (r.hora + frac) * 36e5), yh: r.hora + 0.5 });
+      }
+    });
+    pontos.sort((a, b) => a.t - b.t);
+    const chave = pfx + '|' + s.de + '|' + s.ate + '|' + pontos.length;
+    const animar = !arAnimVisto.has(chave) && pontos.length > 0;
+    if (animar) { arAnimVisto.add(chave); svg.classed('ar-anim', true); }
+    const dur = Math.min(2.4, 0.8 + pontos.length * 0.03);
+    const scanW = W - m.l - m.r;
+    g.append('rect').attr('class', 'ar-scan').attr('x', m.l).attr('y', m.t).attr('width', 2).attr('height', H - m.t - m.b).style('fill', cor)
+      .style('--ar-scan-dur', dur + 's').style('--ar-scan-w', scanW + 'px');
+    const delay = (p) => (((p.t - t0) / (t1 - t0)) * dur).toFixed(3) + 's';
+    const raio = Math.max(2.5, Math.min(5, pxPorHora * 0.45 + 2));
+    g.selectAll('circle.ring').data(pontos).join('circle').attr('class', 'ar-ring').attr('cx', (p) => x(p.t)).attr('cy', (p) => y(p.yh)).attr('r', raio).style('stroke', cor).style('--d', delay);
+    const corDe = (p) => (hi.has(p.r.hora) ? 'var(--ar-hi)' : cor);
+    const dots = g.selectAll('circle.dot').data(pontos).join('circle').attr('class', 'ar-dot').attr('cx', (p) => x(p.t)).attr('cy', (p) => y(p.yh)).attr('r', (p) => (hi.has(p.r.hora) ? raio + 1 : raio)).style('fill', corDe).style('--d', delay);
+    arFaixa(g, { s, hi, x0: m.l, x1: W - m.r, fy: H - faixaH + 2, faixaH, totalW, cor, measure, fmt });
+    const tip = arTip(el);
+    const hl = g.append('rect').attr('y', m.t).attr('height', H - m.t - m.b).style('fill', cor).attr('opacity', 0.08).attr('visibility', 'hidden');
+    const faixas = s.horas;
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [px, py] = d3.pointer(ev);
+        const tt = x.invert(px);
+        const dia = d3.utcFormat('%Y-%m-%d')(tt);
+        const hora = Math.max(0, Math.min(23, Math.floor(nd === 1 ? y.invert(py) : tt.getUTCHours())));
+        const f = faixas.find((r) => r.dia === dia && r.hora === hora);
+        const xa = x(new Date(Date.parse(dia + 'T00:00:00Z') + hora * 36e5));
+        hl.attr('x', xa).attr('width', Math.max(1, pxPorHora)).attr('visibility', 'visible');
+        dots.attr('opacity', (p) => (p.r.dia === dia && p.r.hora === hora ? 1 : 0.35));
+        const hh = String(hora).padStart(2, '0');
+        tip.show(ev, fmt('date', dia) + ' · ' + hh + 'h–' + hh + 'h59' + (dia === hojeD ? ' · hoje' : ''), f ? ['Leads: ' + fmt('int', f.leads), f.campanhas] : ['Nenhum lead nessa faixa']);
+      })
+      .on('pointerleave', () => { hl.attr('visibility', 'hidden'); dots.attr('opacity', 1); tip.hide(); });
+  };
+
+  dash.draw('bloco-chart', (el) => {
+    el.replaceChildren();
+    const pfx = blocoDe(el).bloco;
+    const s0 = arBloco(pfx);
+    if (s0.status === 'ok' && s0.temHora) {
+      if (!arState(el, ['grupos_dia', 'grupos_hora'])) return;
+      horaChart(el, pfx, arBloco(pfx));
+      return;
+    }
+    if (!arState(el, ['grupos_dia', 'grupos_hora_mes'])) return;
+    const s = arBloco(pfx);
+    if (s.status !== 'ok' || !s.serie.length) return;
+    const fmt = arFmt;
+    const cor = pfx === 'loas' ? 'var(--ar-gold)' : 'var(--ar-gold-2)';
+    const hoje = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+    const rows = s.serie.map((r) => Object.assign({ date: new Date(r.dia + 'T00:00:00Z') }, r));
+    const W = Math.max(280, el.clientWidth), H = 196, faixaH = 30;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block').style('overflow', 'visible');
+    const measure = (t) => { const n = svg.append('text').attr('font-size', 12).text(t); const w = n.node().getComputedTextLength(); n.remove(); return w; };
+    const totalW = Math.max(56, measure('Total ' + fmt('int', d3.sum(s.leadsHora))) + 14);
+    const y = d3.scaleLinear([0, (d3.max(rows, (r) => r.leads) || 1) * 1.15], [H - 26 - faixaH, 10]).nice();
+    const yT = y.ticks(4);
+    const m = { t: 10, b: 26 + faixaH, l: d3.max(yT, (t) => measure(fmt('int', t))) + 10, r: totalW + 8 };
+    const x = d3.scaleBand(rows.map((r) => r.dia), [m.l, W - m.r]).paddingInner(rows.length > 120 ? 0.08 : 0.25).paddingOuter(0.05);
+    const bw = Math.min(32, x.bandwidth());
+    const g = svg.append('g');
+    g.selectAll('line.gr').data(yT).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).style('stroke', 'var(--cds-chart-grid)');
+    g.selectAll('text.yl').data(yT).join('text').attr('x', m.l - 8).attr('y', y).attr('dy', '0.32em').attr('text-anchor', 'end').attr('font-size', 12).style('fill', 'var(--color-fg-muted)').text((t) => fmt('int', t));
+    g.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', H - m.b).attr('y2', H - m.b).style('stroke', 'var(--cds-chart-axis)');
+    const lw = measure('00/00/00') + 14;
+    const step = Math.max(1, Math.ceil(rows.length / Math.max(2, Math.floor((W - m.l - m.r) / lw))));
+    const longo = rows.length > 120;
+    const tickFmt = (r) => r.dia.slice(8, 10) + '/' + r.dia.slice(5, 7) + (longo ? '/' + r.dia.slice(2, 4) : '');
+    g.selectAll('text.xl').data(rows.filter((r, i) => i % step === 0)).join('text').attr('x', (r) => x(r.dia) + x.bandwidth() / 2).attr('y', H - m.b + 16).attr('text-anchor', 'middle').attr('font-size', 11).style('fill', 'var(--color-fg-muted)').text(tickFmt);
+    const bars = g.selectAll('rect.b').data(rows).join('rect').attr('x', (r) => x(r.dia) + (x.bandwidth() - bw) / 2).attr('width', Math.max(1, bw)).attr('y', (r) => y(r.leads)).attr('height', (r) => y(0) - y(r.leads)).attr('rx', Math.min(2, bw / 2)).style('fill', cor).attr('opacity', 0.9);
+    if (s.media > 0) {
+      g.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(s.media)).attr('y2', y(s.media)).style('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 4').attr('stroke-width', 1);
+    }
+    arFaixa(g, { s, hi: s.melhores, x0: m.l, x1: W - m.r, fy: H - faixaH + 2, faixaH, totalW, cor, measure, fmt });
+    const tip = arTip(el);
+    g.selectAll('rect.hit').data(rows).join('rect').attr('x', (r) => x(r.dia) - (x.step() - x.bandwidth()) / 2).attr('width', x.step()).attr('y', m.t).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('pointermove', (ev, r) => {
+        bars.attr('opacity', (b) => (b === r ? 1 : 0.4));
+        tip.show(ev, fmt('date', r.dia) + (r.dia === hoje ? ' · dia em andamento' : ''), ['Leads: ' + fmt('int', r.leads), 'Investido: ' + fmt('brl', r.investimento), 'Custo por lead: ' + fmt('brl', r.leads ? r.investimento / r.leads : null)]);
+      })
+      .on('pointerleave', () => { bars.attr('opacity', 0.9); tip.hide(); });
+  });
+
+  document.querySelectorAll('[data-bloco]').forEach((b) => {
+    const pfx = b.dataset.bloco;
+    b.querySelectorAll('input[type=date][data-ponta]').forEach((inp) => {
+      inp.addEventListener('change', () => {
+        if (!inp.value || !inp.validity.valid) return;
+        const s = arBloco(pfx);
+        if (s.status !== 'ok') return;
+        if (inp.dataset.ponta === 'de') dash.setParams({ [pfx + '_de']: inp.value, [pfx + '_ate']: s.ate });
+        else dash.setParams({ [pfx + '_ate']: inp.value, [pfx + '_de']: s.de });
+      });
+      inp.addEventListener('blur', () => dash.draw('bloco-data'));
+    });
+  });
+
+  window.arPerfil = (pfx) => {
+    const s = arBloco(pfx);
+    if (s.status !== 'ok') return { status: s.status };
+    const pd = dash.data('perfil_dia'), pm = dash.data('perfil_mes');
+    if (pd.status !== 'ok' || pm.status !== 'ok') return { status: [pd.status, pm.status].some((x) => x === 'error' || x === 'connect') ? 'error' : 'loading' };
+    const cob = addD(s.max, -14);
+    const porDia = new Map(), porMes = new Map();
+    (pd.data || []).filter((r) => r.grupo === pfx).forEach((r) => {
+      const m = porDia.get(r.dia) || new Map(); const k = r.idade + '|' + r.sexo; m.set(k, (m.get(k) || 0) + r.leads); porDia.set(r.dia, m);
+    });
+    (pm.data || []).filter((r) => r.grupo === pfx).forEach((r) => {
+      const m = porMes.get(r.mes) || new Map(); const k = r.idade + '|' + r.sexo; m.set(k, (m.get(k) || 0) + r.leads); porMes.set(r.mes, m);
+    });
+    const fimMes = (ms) => addD(addD(ms + '-01', 32).slice(0, 7) + '-01', -1);
+    const acc = new Map();
+    let estimado = false;
+    s.serie.forEach((r) => {
+      if (!r.leads) return;
+      if (r.dia >= cob) { const m = porDia.get(r.dia); if (m) m.forEach((v, k) => acc.set(k, (acc.get(k) || 0) + v)); return; }
+      const ms = r.dia.slice(0, 7);
+      const p = porMes.get(ms);
+      if (!p) return;
+      const tot = d3.sum(Array.from(p.values()));
+      if (!tot) return;
+      if (ms + '-01' < s.de || fimMes(ms) > s.ate) estimado = true;
+      p.forEach((v, k) => acc.set(k, (acc.get(k) || 0) + (r.leads * v) / tot));
+    });
+    const chaves = Array.from(acc.keys());
+    const base = chaves.map((k) => Math.floor(acc.get(k)));
+    let falta = Math.round(d3.sum(chaves, (k) => acc.get(k))) - d3.sum(base);
+    chaves.map((k, i) => [acc.get(k) - base[i], i]).sort((a, b) => b[0] - a[0]).forEach(([, i]) => { if (falta > 0) { base[i] += 1; falta -= 1; } });
+    const celulas = chaves.map((k, i) => ({ idade: k.split('|')[0], sexo: k.split('|')[1], leads: base[i] })).filter((c) => c.leads > 0);
+    const f = d3.sum(celulas.filter((c) => c.sexo === 'female'), (c) => c.leads);
+    const m = d3.sum(celulas.filter((c) => c.sexo === 'male'), (c) => c.leads);
+    return { status: 'ok', s, celulas, estimado, f, m, pf: f + m ? (f / (f + m)) * 100 : null, pm: f + m ? (m / (f + m)) * 100 : null };
+  };
+
+  dash.draw('perfil-genero', (el) => {
+    el.replaceChildren();
+    const pfx = blocoDe(el).bloco;
+    const p = arPerfil(pfx);
+    el.classList.toggle('dash-skeleton', p.status === 'loading');
+    if (p.status === 'error') { const fl = document.createElement('div'); fl.className = 'ar-fail'; fl.textContent = 'Falha ao carregar'; el.append(fl); return; }
+    if (p.status !== 'ok') return;
+    const fmt = arFmt;
+    const tot = p.f + p.m;
+    const W = Math.max(280, el.clientWidth), H = 44;
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block');
+    const pc = (v) => (tot ? new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format((v / tot) * 100) + '%' : '—');
+    const tf = svg.append('text').attr('x', 0).attr('y', 12).attr('font-size', 11).style('fill', 'var(--ar-fem)');
+    tf.append('tspan').text('MULHERES  ' + pc(p.f) + ' · ');
+    tf.append('tspan').attr('font-weight', 700).attr('font-size', 12).text(fmt('int', p.f) + ' leads');
+    const tm = svg.append('text').attr('x', W).attr('y', 12).attr('text-anchor', 'end').attr('font-size', 11).style('fill', 'var(--ar-gold)');
+    tm.append('tspan').attr('font-weight', 700).attr('font-size', 12).text(fmt('int', p.m) + ' leads');
+    tm.append('tspan').text(' · ' + pc(p.m) + '  HOMENS');
+    const wf = tot ? (p.f / tot) * W : W / 2;
+    const chave = 'gen|' + pfx + '|' + p.s.de + '|' + p.s.ate + '|' + tot;
+    if (!arAnimVisto.has(chave)) { arAnimVisto.add(chave); svg.classed('ar-anim', true); }
+    svg.append('rect').attr('x', 0).attr('y', 20).attr('width', Math.max(0, wf - 1)).attr('height', 16).attr('rx', 3).attr('class', 'ar-grow ar-dir').style('fill', 'var(--ar-fem)').style('--d', '0s');
+    svg.append('rect').attr('x', wf + 1).attr('y', 20).attr('width', Math.max(0, W - wf - 1)).attr('height', 16).attr('rx', 3).attr('class', 'ar-grow ar-esq').style('fill', 'var(--ar-gold)').style('--d', '0.1s');
+    if (!tot) svg.append('text').attr('x', W / 2).attr('y', 32).attr('text-anchor', 'middle').attr('font-size', 11).style('fill', 'var(--color-fg-muted)').text('Sem leads no período');
+  });
+
+  window.arSemana = (pfx) => {
+    const s = arBloco(pfx);
+    if (s.status !== 'ok') return { status: s.status };
+    const gh = dash.data('grupos_hora'), hm = dash.data('grupos_hora_mes'), pd = dash.data('perfil_dia'), pmm = dash.data('perfil_mes');
+    const sts = [gh.status, hm.status, pd.status, pmm.status];
+    if (sts.some((x) => x !== 'ok')) return { status: sts.some((x) => x === 'error' || x === 'connect') ? 'error' : 'loading' };
+    const sexoDia = new Map(), sexoMes = new Map();
+    const somaSexo = (map, k, r) => { const o = map.get(k) || { f: 0, m: 0 }; if (r.sexo === 'female') o.f += r.leads; else if (r.sexo === 'male') o.m += r.leads; map.set(k, o); };
+    (pd.data || []).filter((r) => r.grupo === pfx).forEach((r) => somaSexo(sexoDia, r.dia, r));
+    (pmm.data || []).filter((r) => r.grupo === pfx).forEach((r) => somaSexo(sexoMes, r.mes, r));
+    const cob = addD(s.max, -14);
+    const exato = new Map(), perfil = new Map();
+    (gh.data || []).filter((r) => r.grupo === pfx).forEach((r) => { if (!exato.has(r.dia)) exato.set(r.dia, d3.range(24).map(() => 0)); exato.get(r.dia)[r.hora] += r.leads; });
+    (hm.data || []).filter((r) => r.grupo === pfx).forEach((r) => { if (!perfil.has(r.mes)) perfil.set(r.mes, d3.range(24).map(() => 0)); perfil.get(r.mes)[r.hora] += r.leads; });
+    const linhas = d3.range(7).map(() => d3.range(24).map(() => 0));
+    const fem = d3.range(7).map(() => d3.range(24).map(() => 0));
+    const masc = d3.range(7).map(() => d3.range(24).map(() => 0));
+    const totDia = d3.range(7).map(() => 0);
+    s.serie.forEach((r) => {
+      if (!r.leads) return;
+      const w = (new Date(r.dia + 'T00:00:00Z').getUTCDay() + 6) % 7;
+      totDia[w] += r.leads;
+      const sx = (r.dia >= cob ? sexoDia.get(r.dia) : null) || sexoMes.get(r.dia.slice(0, 7)) || { f: 0, m: 0 };
+      const sf = sx.f + sx.m ? sx.f / (sx.f + sx.m) : 0.5;
+      const add = (h, v) => { linhas[w][h] += v; fem[w][h] += v * sf; masc[w][h] += v * (1 - sf); };
+      if (r.dia >= cob) { const e = exato.get(r.dia); if (e) e.forEach((v, h) => add(h, v)); return; }
+      const p = perfil.get(r.dia.slice(0, 7));
+      const tp = p ? d3.sum(p) : 0;
+      if (tp) p.forEach((v, h) => add(h, (r.leads * v) / tp));
+    });
+    const grade = linhas.map((row) => {
+      const alvo = Math.round(d3.sum(row));
+      const base = row.map((v) => Math.floor(v));
+      let falta = alvo - d3.sum(base);
+      row.map((v, h) => [v - Math.floor(v), h]).sort((a, b) => b[0] - a[0]).forEach(([, h]) => { if (falta > 0) { base[h] += 1; falta -= 1; } });
+      return base;
+    });
+    const celulas = [];
+    grade.forEach((row, w) => row.forEach((v, h) => {
+      const tf = fem[w][h], tm = masc[w][h];
+      const ff = v && tf + tm ? (v * tf) / (tf + tm) : 0;
+      celulas.push({ w, h, v, ff, f: Math.floor(ff), m: 0 });
+    }));
+    let faltaF = Math.round(d3.sum(celulas, (c) => c.ff)) - d3.sum(celulas, (c) => c.f);
+    celulas.filter((c) => c.v > c.f).sort((a, b) => (b.ff - b.f) - (a.ff - a.f) || a.w - b.w || a.h - b.h).forEach((c) => { if (faltaF > 0) { c.f += 1; faltaF -= 1; } });
+    celulas.forEach((c) => { c.m = c.v - c.f; });
+    const ord = celulas.filter((c) => c.v > 0).sort((a, b) => b.v - a.v);
+    const corte = ord.length ? ord[Math.min(2, ord.length - 1)].v : Infinity;
+    const melhorDia = d3.max(totDia) > 0 ? totDia.indexOf(d3.max(totDia)) : -1;
+    return { status: 'ok', s, grade, celulas, corte, totDia: grade.map((row) => d3.sum(row)), melhorDia };
+  };
+
+  dash.draw('perfil-semana', (el) => {
+    el.replaceChildren();
+    const pfx = blocoDe(el).bloco;
+    const q = arSemana(pfx);
+    el.classList.toggle('dash-skeleton', q.status === 'loading');
+    if (q.status === 'error') { const fl = document.createElement('div'); fl.className = 'ar-fail'; fl.textContent = 'Falha ao carregar'; el.append(fl); return; }
+    if (q.status !== 'ok') return;
+    const fmt = arFmt;
+    const cor = pfx === 'loas' ? 'var(--ar-gold)' : 'var(--ar-gold-2)';
+    const dias = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+    const nomes = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+    const W = Math.max(280, el.clientWidth);
+    const svg = d3.select(el).append('svg').attr('width', '100%').style('display', 'block').style('overflow', 'visible');
+    const measure = (t, fs) => { const n = svg.append('text').attr('font-size', fs || 11).text(t); const w = n.node().getComputedTextLength(); n.remove(); return w; };
+    const m = { t: 4, l: measure('Sáb') + 10, r: measure('0000') + 22, b: 20 };
+    const cw = (W - m.l - m.r) / 24;
+    const ch = Math.max(16, Math.min(24, cw * 0.9));
+    const H = m.t + ch * 7 + m.b;
+    svg.attr('viewBox', `0 0 ${W} ${H}`);
+    const max = d3.max(q.celulas, (c) => c.v) || 1;
+    const chave = 'sem|' + pfx + '|' + q.s.de + '|' + q.s.ate + '|' + d3.sum(q.totDia);
+    if (!arAnimVisto.has(chave)) { arAnimVisto.add(chave); svg.classed('ar-anim', true); }
+    const g = svg.append('g');
+    const melhor = (c) => c.v > 0 && c.v >= q.corte;
+    const cw2 = Math.max(1, cw - 2);
+    const cel = g.selectAll('g.c').data(q.celulas).join('g').attr('class', 'ar-cel')
+      .attr('transform', (c) => `translate(${m.l + c.h * cw + 1},${m.t + c.w * ch + 1})`).style('--d', (c) => ((c.h * 0.02) + (c.w * 0.03)).toFixed(2) + 's');
+    cel.filter((c) => !c.v).append('rect').attr('width', cw2).attr('height', ch - 2).attr('rx', 2).style('fill', 'var(--ar-panel-2)');
+    const op = () => 1;
+    cel.filter((c) => c.v > 0).append('rect').attr('width', (c) => cw2 * (c.f / c.v)).attr('height', ch - 2).attr('rx', 2).style('fill', 'var(--ar-fem)').attr('fill-opacity', op);
+    cel.filter((c) => c.v > 0).append('rect').attr('x', (c) => cw2 * (c.f / c.v)).attr('width', (c) => cw2 * (c.m / c.v)).attr('height', ch - 2).attr('rx', 2).style('fill', 'var(--ar-gold)').attr('fill-opacity', op);
+    cel.filter((c) => melhor(c)).append('rect').attr('x', -1).attr('y', -1).attr('width', cw2 + 2).attr('height', ch).attr('rx', 3).attr('fill', 'none').style('stroke', 'var(--ar-hi)').attr('stroke-width', 1.6);
+    const cabe = cw >= measure('0', 9) * 2 + 6;
+    if (cabe) {
+      cel.filter((c) => c.f > 0).append('text').attr('x', (c) => (c.m ? (cw2 * (c.f / c.v)) / 2 : cw2 / 2)).attr('y', (ch - 2) / 2).attr('dy', '0.35em').attr('text-anchor', 'middle').attr('font-size', 9).attr('font-weight', 700).style('fill', 'var(--ar-bg)').style('pointer-events', 'none').text((c) => c.f);
+      cel.filter((c) => c.m > 0).append('text').attr('x', (c) => (c.f ? cw2 * (c.f / c.v) + (cw2 * (c.m / c.v)) / 2 : cw2 / 2)).attr('y', (ch - 2) / 2).attr('dy', '0.35em').attr('text-anchor', 'middle').attr('font-size', 9).attr('font-weight', 700).style('fill', 'var(--ar-bg)').style('pointer-events', 'none').text((c) => c.m);
+    }
+    g.selectAll('text.d').data(dias).join('text').attr('x', m.l - 8).attr('y', (d, i) => m.t + i * ch + ch / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('font-size', 11)
+      .style('fill', (d, i) => (i === q.melhorDia ? 'var(--ar-hi)' : 'var(--color-fg-muted)')).attr('font-weight', (d, i) => (i === q.melhorDia ? 700 : 400)).text((d) => d);
+    g.selectAll('text.t').data(q.totDia).join('text').attr('x', W - m.r + 8).attr('y', (d, i) => m.t + i * ch + ch / 2).attr('dy', '0.35em').attr('font-size', 11)
+      .style('fill', (d, i) => (i === q.melhorDia ? 'var(--ar-hi)' : 'var(--color-fg)')).attr('font-weight', (d, i) => (i === q.melhorDia ? 700 : 400)).text((d) => fmt('int', d));
+    const passo = cw * 3 >= measure('00h') + 6 ? 3 : 6;
+    g.selectAll('text.h').data(d3.range(0, 24, passo)).join('text').attr('x', (h) => m.l + h * cw + cw / 2).attr('y', H - 4).attr('text-anchor', 'middle').attr('font-size', 10).style('fill', 'var(--color-fg-muted)').text((h) => String(h).padStart(2, '0') + 'h');
+    const tip = arTip(el);
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', cw * 24).attr('height', ch * 7).attr('fill', 'transparent')
+      .on('pointermove', (ev) => {
+        const [px, py] = d3.pointer(ev);
+        const h = Math.max(0, Math.min(23, Math.floor((px - m.l) / cw)));
+        const w = Math.max(0, Math.min(6, Math.floor((py - m.t) / ch)));
+        const c = q.celulas.find((x) => x.w === w && x.h === h) || { v: 0, f: 0, m: 0 };
+        const hh = String(h).padStart(2, '0');
+        tip.show(ev, nomes[w] + ' · ' + hh + 'h–' + hh + 'h59', [fmt('int', c.v) + ' leads'].concat(c.v ? ['Mulheres ' + fmt('int', c.f) + ' · Homens ' + fmt('int', c.m)] : []).concat(melhor(c) ? ['Entre os melhores horários'] : []));
+      })
+      .on('pointerleave', () => tip.hide());
+  });
+
+  window.arCriaBase = () => {
+    const d = dash.data('criativos_dia');
+    if (d.status !== 'ok') return { status: d.status };
+    const rows = d.data || [];
+    const hoje = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });
+    const max = rows.reduce((m, r) => (r.dia > m ? r.dia : m), hoje);
+    return { status: 'ok', rows, hoje: max, ini: max.slice(0, 7) + '-01' };
+  };
+  const rankCria = (rows, pfx, de, ate) => {
+    const soma = new Map();
+    rows.filter((r) => r.grupo === pfx && r.dia >= de && r.dia <= ate).forEach((r) => {
+      const o = soma.get(r.nome) || { nome: r.nome, leads: 0, campanhas: new Map() };
+      o.leads += r.leads;
+      o.campanhas.set(r.campanha, (o.campanhas.get(r.campanha) || 0) + r.leads);
+      soma.set(r.nome, o);
+    });
+    const lista = Array.from(soma.values()).sort((a, b) => b.leads - a.leads);
+    return { lista, total: d3.sum(lista, (o) => o.leads) };
+  };
+  window.arPrint = (nome) => { const P = window.arPrints || {}; return P[String(nome || '').toLowerCase().split(/\s+/).filter(Boolean).join(' ')] || null; };
+  const campDe = (o) => String(Array.from(o.campanhas.entries()).sort((a, b) => b[1] - a[1])[0][0]).replace(/^Campanha \|\s*/, '');
+  const mkEl = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const falha = (el, txt) => { const fl = mkEl('div', 'ar-fail', txt); el.append(fl); };
+  const pctTxt = (v, t) => (t ? new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format((v / t) * 100) + '% do total' : '');
+
+  dash.draw('cria-periodo', (el) => {
+    const b = arCriaBase();
+    el.textContent = b.status === 'ok' ? arFmt('date', b.ini) + ' a ' + arFmt('date', b.hoje) : '—';
+  });
+
+  dash.draw('criativos-mes', (el) => {
+    el.replaceChildren();
+    if (!arState(el, ['criativos_dia'])) return;
+    const pfx = blocoDe(el).bloco;
+    const b = arCriaBase();
+    if (b.status !== 'ok') return;
+    const fmt = arFmt;
+    const { lista, total } = rankCria(b.rows, pfx, b.ini, b.hoje);
+    const top = lista.slice(0, 2);
+    if (!top.length) { falha(el, 'Sem leads de criativos no mês'); return; }
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const icone = (video) => {
+      const sv = document.createElementNS(svgNS, 'svg'); sv.setAttribute('viewBox', '0 0 48 48'); sv.setAttribute('class', 'ar-cria-icone');
+      const c = document.createElementNS(svgNS, 'circle'); c.setAttribute('cx', 24); c.setAttribute('cy', 24); c.setAttribute('r', 21); sv.append(c);
+      if (video) { const p = document.createElementNS(svgNS, 'path'); p.setAttribute('d', 'M20 15 L34 24 L20 33 Z'); p.setAttribute('class', 'ar-fill'); sv.append(p); }
+      else { const r = document.createElementNS(svgNS, 'rect'); r.setAttribute('x', 13); r.setAttribute('y', 15); r.setAttribute('width', 22); r.setAttribute('height', 18); r.setAttribute('rx', 2); sv.append(r);
+        const p = document.createElementNS(svgNS, 'path'); p.setAttribute('d', 'M15 31 L22 23 L27 28 L30 25 L34 30'); sv.append(p);
+        const o = document.createElementNS(svgNS, 'circle'); o.setAttribute('cx', 29); o.setAttribute('cy', 20); o.setAttribute('r', 2); o.setAttribute('class', 'ar-fill'); sv.append(o); }
+      return sv;
+    };
+    top.forEach((o, i) => {
+      const video = /v[ií]deo/i.test(o.nome);
+      const card = mkEl('div', 'ar-cria-card' + (i === 0 ? ' ar-top' : ''));
+      const frame = mkEl('div', 'ar-cria-frame');
+      const pr = arPrint(o.nome);
+      if (pr) {
+        frame.classList.add('ar-com-print');
+        const img = document.createElement('img'); img.src = pr; img.alt = 'Print do criativo ' + o.nome;
+        frame.append(img, mkEl('span', 'ar-cria-rank', String(i + 1) + 'º'));
+      } else {
+        frame.append(mkEl('span', 'ar-cria-rank', String(i + 1) + 'º'), icone(video));
+      }
+      const leads = mkEl('div', 'ar-cria-leads');
+      leads.append(mkEl('b', null, fmt('int', o.leads)), mkEl('span', null, 'leads · ' + pctTxt(o.leads, total)));
+      const info = mkEl('div', 'ar-cria-info');
+      info.append(mkEl('span', 'ar-cria-tipo-txt ar-cria-camp', (video ? 'VÍDEO' : 'IMAGEM')), mkEl('span', 'ar-cria-nome', o.nome), mkEl('span', 'ar-cria-camp', campDe(o)), leads);
+      card.append(frame, info);
+      el.append(card);
+    });
+  });
+
+  const criaDia = (pfx, b) => {
+    const p = dash.params()[pfx + '_cria_dia'];
+    return p && p >= b.ini && p <= b.hoje ? p : b.hoje;
+  };
+
+  dash.draw('cria-data', (el) => {
+    const b = arCriaBase();
+    if (b.status !== 'ok') { el.disabled = true; return; }
+    el.disabled = false;
+    el.min = b.ini;
+    el.max = b.hoje;
+    if (el !== document.activeElement) el.value = criaDia(blocoDe(el).bloco, b);
+  });
+
+  dash.draw('criativos-dia', (el) => {
+    el.replaceChildren();
+    if (!arState(el, ['criativos_dia'])) return;
+    const pfx = blocoDe(el).bloco;
+    const b = arCriaBase();
+    if (b.status !== 'ok') return;
+    const fmt = arFmt;
+    const dia = criaDia(pfx, b);
+    const { lista, total } = rankCria(b.rows, pfx, dia, dia);
+    if (!lista.length) { falha(el, 'Sem leads de criativos em ' + fmt('date', dia)); return; }
+    lista.slice(0, 2).forEach((o, i) => {
+      const linha = mkEl('div', 'ar-cria-linha');
+      const n = mkEl('span', 'ar-cria-n', o.nome);
+      n.append(mkEl('small', null, campDe(o) + ' · ' + pctTxt(o.leads, total) + (dia === b.hoje ? ' · hoje' : '')));
+      const pr = arPrint(o.nome);
+      let mini;
+      if (pr) { mini = document.createElement('img'); mini.className = 'ar-cria-mini'; mini.src = pr; mini.alt = 'Print do criativo ' + o.nome; } else { mini = mkEl('span', 'ar-cria-mini'); }
+      linha.append(mkEl('span', 'ar-cria-pos', String(i + 1) + 'º'), mini, n, mkEl('b', null, fmt('int', o.leads) + (o.leads === 1 ? ' lead' : ' leads')));
+      el.append(linha);
+    });
+  });
+
+  document.querySelectorAll('[id^="criativos-"] input[type=date]').forEach((inp) => {
+    const pfx = (inp.closest('[data-bloco]') || {}).dataset.bloco;
+    inp.addEventListener('change', () => { if (inp.value && inp.validity.valid) dash.setParams({ [pfx + '_cria_dia']: inp.value }); });
+    inp.addEventListener('blur', () => dash.draw('cria-data'));
+  });
+
+  const janelaDe = (j) => {
+    const s = arBloco('loas');
+    if (s.status !== 'ok') return null;
+    const hoje = s.max;
+    const ontem = addD(hoje, -1);
+    if (j === 'hoje') return { de: hoje, ate: hoje };
+    if (j === 'ontem') return { de: ontem, ate: ontem };
+    if (j === 'mes') { const fim = addD(hoje.slice(0, 7) + '-01', -1); return { de: fim.slice(0, 7) + '-01', ate: fim }; }
+    const n = Number(j);
+    return { de: addD(ontem, 1 - n), ate: ontem };
+  };
+  const janelas = document.querySelectorAll('.ar-janela button');
+  janelas.forEach((btn) => btn.addEventListener('click', () => {
+    const w = janelaDe(btn.dataset.j);
+    if (!w) return;
+    const p = { loas_de: w.de, loas_ate: w.ate, concessao_de: w.de, concessao_ate: w.ate };
+    dash.setParams(p);
+  }));
+  dash.onData(() => {
+    const a = arBloco('loas'), b = arBloco('concessao');
+    janelas.forEach((btn) => {
+      const w = a.status === 'ok' ? janelaDe(btn.dataset.j) : null;
+      const igual = (s) => w && s.status === 'ok' && s.de === (w.de < s.min ? s.min : w.de) && s.ate === w.ate;
+      btn.setAttribute('aria-pressed', String(!!(igual(a) && igual(b))));
+    });
+  });
+
+  const pals = document.querySelectorAll('.ar-pal button');
+  pals.forEach((btn) => btn.addEventListener('click', () => dash.setParams({ paleta: btn.dataset.pal })));
+
+  dash.onData(() => {
+    const pal = dash.params().paleta || 'noir';
+    document.querySelectorAll('.ar').forEach((el) => { el.classList.toggle('pal-ebano', pal === 'ebano'); el.classList.toggle('pal-grafite', pal === 'grafite'); });
+    pals.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.pal === pal)));
+  });
+</script>
+
