@@ -1,23 +1,25 @@
 name: Atualizar painel
-
+ 
 on:
   schedule:
-    - cron: '7,22,37,52 11-20 * * 1-5'  workflow_dispatch:
+    # 08h às 17h de Brasília (11h–20h UTC), segunda a sexta
+    - cron: '7,22,37,52 11-20 * * 1-5'
+  workflow_dispatch:
     inputs:
       forcar:
         description: 'Atualizar mesmo em feriado ou fim de semana'
         type: boolean
         default: true
-
+ 
 permissions:
   contents: write
   pages: write
   id-token: write
-
+ 
 concurrency:
   group: painel
   cancel-in-progress: false
-
+ 
 jobs:
   atualizar:
     runs-on: ubuntu-latest
@@ -45,7 +47,7 @@ jobs:
         id: deploy
         if: steps.build.outputs.pular != 'true'
         uses: actions/deploy-pages@v4
-      - name: Manter o agendamento ativo
+      - name: Manter o agendamento ativo (1 registro por dia)
         if: steps.build.outputs.pular != 'true'
         run: |
           hoje=$(TZ=America/Sao_Paulo date +%F)
@@ -57,3 +59,4 @@ jobs:
             git commit -m "Atualização $hoje"
             git push
           fi
+ 
