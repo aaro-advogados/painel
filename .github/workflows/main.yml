@@ -2,7 +2,6 @@ name: Atualizar painel
  
 on:
   schedule:
-    # 08h às 17h de Brasília (11h–20h UTC), segunda a sexta
     - cron: '7,22,37,52 11-20 * * 1-5'
   workflow_dispatch:
     inputs:
@@ -10,19 +9,24 @@ on:
         description: 'Atualizar mesmo em feriado ou fim de semana'
         type: boolean
         default: true
+      modo:
+        description: 'atualizar ou esperar (uso interno)'
+        type: string
+        default: 'atualizar'
  
 permissions:
   contents: write
   pages: write
   id-token: write
- 
-concurrency:
-  group: painel
-  cancel-in-progress: false
+  actions: write
  
 jobs:
   atualizar:
+    if: github.event_name != 'workflow_dispatch' || inputs.modo != 'esperar'
     runs-on: ubuntu-latest
+    concurrency:
+      group: painel-atualizar
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -36,7 +40,10 @@ jobs:
         env:
           META_TOKEN: ${{ secrets.META_TOKEN }}
           FORCAR: ${{ github.event_name == 'workflow_dispatch' && inputs.forcar }}
-        run: cp atualizar.js montar.js painel-aaro-github/painel/ && node painel-aaro-github/painel/atualizar.js
+        run: |
+          cp atualizar.js painel-aaro-github/painel/
+          if [ -f "montar (1).js" ]; then cp "montar (1).js" painel-aaro-github/painel/montar.js; else cp montar.js painel-aaro-github/painel/; fi
+          node painel-aaro-github/painel/atualizar.js
       - uses: actions/configure-pages@v5
         if: steps.build.outputs.pular != 'true'
       - uses: actions/upload-pages-artifact@v3
@@ -47,7 +54,7 @@ jobs:
         id: deploy
         if: steps.build.outputs.pular != 'true'
         uses: actions/deploy-pages@v4
-      - name: Manter o agendamento ativo (1 registro por dia)
+      - name: Manter o agendamento ativo
         if: steps.build.outputs.pular != 'true'
         run: |
           hoje=$(TZ=America/Sao_Paulo date +%F)
@@ -57,6 +64,43 @@ jobs:
             git config user.email "painel-bot@users.noreply.github.com"
             git add ultima-atualizacao.txt
             git commit -m "Atualização $hoje"
-            git push
+            git pull --rebase || true
+            git push || true
           fi
+ 
+  # Agenda a próxima rodada sozinho (o agendamento do GitHub atrasa ou falha).
+  proximo:
+    needs: atualizar
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Esperar o próximo horário
+        id: espera
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
+          n = datetime.now(ZoneInfo('America/Sao_Paulo'))
+          t = n.replace(second=0, microsecond=0) + timedelta(minutes=1)
+          while not (t.weekday() < 5 and 8 <= t.hour <= 17 and t.minute in (7, 22, 37, 52)):
+              t += timedelta(minutes=1)
+          w = int((t - n).total_seconds())
+          modo = 'atualizar'
+          if w > 5 * 3600:
+              w, modo = 5 * 3600, 'esperar'
+          print(f"segundos={max(w, 30)}")
+          print(f"modo={modo}")
+          PY
+          cat "$GITHUB_OUTPUT"
+      - name: Dormir
+        run: sleep ${{ steps.espera.outputs.segundos }}
+      - name: Disparar a próxima rodada
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          outros=$(gh run list -R "${{ github.repository }}" --workflow main.yml --limit 20 --json databaseId,status \
+            --jq '[.[] | select(.databaseId != ${{ github.run_id }} and (.status == "queued" or .status == "in_progress" or .status == "waiting" or .status == "pending"))] | length')
+          if [ "$outros" -gt 0 ]; then echo "Já existe outra rodada ativa: não disparo outra."; exit 0; fi
+          gh workflow run main.yml -R "${{ github.repository }}" -f forcar=false -f modo=${{ steps.espera.outputs.modo }}
  
